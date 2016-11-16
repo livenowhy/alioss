@@ -1,4 +1,9 @@
-package main
+/**
+ * 1. 用户向应用服务器取到上传policy和回调设置
+ * 2. 应用服务器返回上传policy和回调
+ */
+
+package server
 
 import (
 	"crypto/hmac"
@@ -12,9 +17,16 @@ import (
 	"time"
 )
 
-var accessKeyId string = "6MKOqxGiGU4AUk44"
-var accessKeySecret string = "ufu7nS8kS59awNihtjSonMETLI0KLy"
-var host string = "http://post-test.oss-cn-hangzhou.aliyuncs.com"
+//var accessKeyId string = "6MKOqxGiGU4AUk44"
+//var accessKeySecret string = "ufu7nS8kS59awNihtjSonMETLI0KLy"
+//var host string = "http://post-test.oss-cn-hangzhou.aliyuncs.com"
+
+
+
+var accessKeyId string = "aifLgFuyz092J0WO"
+var accessKeySecret string = "5IRKR16bmjQaypC54MzGtwFROXtTmN"
+//var host string = "http://boxlinker-develop.livenowhy.com"
+var host string = "http://boxlinker-develop.oss-cn-shanghai.aliyuncs.com"
 var expire_time int64 = 60
 var upload_dir string = "user-dir/"
 var callbackUrl string = "http://oss-demo.aliyuncs.com:23450"
@@ -101,7 +113,7 @@ func get_policy_token() string {
 	return string(response)
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	response := get_policy_token()
 	fmt.Println("---->")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
@@ -109,7 +121,4 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, response)
 }
 
-func main() {
-	http.HandleFunc("/", hello)
-	http.ListenAndServe(":1234", nil)
-}
+

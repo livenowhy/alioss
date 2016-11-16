@@ -4,6 +4,8 @@ import (
 	"github.com/liuzhangpei/alioss/server"
 	"github.com/golang/glog"
 	"fmt"
+	"net/http"
+
 )
 
 
@@ -13,6 +15,10 @@ func main() {
 	if err != nil {
 		glog.Exitf("Failed to load config: %s", err)
 	}
+
+	http.HandleFunc("/", server.PolicyCallback)
+	http.ListenAndServe(":1234", nil)
+
 
 	fmt.Println(c.AliyunKey.AccessKeySecret)
 }
