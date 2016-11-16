@@ -24,7 +24,7 @@ function send_request()
   
     if (xmlhttp!=null)
     {
-        phpUrl = './php/get.php'
+        phpUrl = 'http://0.0.0.0:1234'
         xmlhttp.open( "GET", phpUrl, false );
         xmlhttp.send( null );
         return xmlhttp.responseText

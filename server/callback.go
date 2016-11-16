@@ -103,6 +103,7 @@ func get_policy_token() string {
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	response := get_policy_token()
+	fmt.Println("---->")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, response)
