@@ -65,7 +65,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error authorization_base64 :", err)
 		return
 	}
-	fmt.Printf("authorization : %s", string(authorization))
+	fmt.Println("authorization :")
+	fmt.Println(string(authorization))
+
 
 
 	// get callback body
