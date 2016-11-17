@@ -29,7 +29,7 @@ var accessKeySecret string = "5IRKR16bmjQaypC54MzGtwFROXtTmN"
 var host string = "http://boxlinker-develop.oss-cn-shanghai.aliyuncs.com"
 var expire_time int64 = 60
 var upload_dir string = "user-dir/"
-var callbackUrl string = "http://oss-demo.aliyuncs.com:23450"
+var callbackUrl string = "http://index.boxlinker.com:8765/callback"  // oss 回调
 
 const (
 	base64Table = "123QRSTUabcdVWXYZHijKLAWDCABDstEFGuvwxyzGHIJklmnopqr234560178912"

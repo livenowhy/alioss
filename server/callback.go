@@ -24,13 +24,22 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(pub_key_url_base64)
 
+	// aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0=
+	// https://gosspublic.alicdn.com/callback_pub_key_v1.pem
 
-	pub_key_url := base64.StdEncoding.EncodeToString([]byte(pub_key_url_base64))
+	pub_key_url, err := base64.StdEncoding.DecodeString(pub_key_url_base64)
+	if err != nil {
+		fmt.Println("error:", err)
+		return
+	}
 	fmt.Println(pub_key_url)
 
 	var client = &http.Client{}
 
-	request, _ := http.NewRequest("GET", pub_key_url, nil)
+
+	pub_key_url_str := string(pub_key_url)
+
+	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
 	response, _ := client.Do(request)
 	defer response.Body.Close()
 

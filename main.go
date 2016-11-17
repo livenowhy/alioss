@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/liuzhangpei/alioss/server"
-	"github.com/golang/glog"
-	"fmt"
+	//"github.com/golang/glog"
+	//"fmt"
 	"net/http"
 
 )
