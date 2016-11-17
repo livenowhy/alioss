@@ -47,6 +47,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	defer response.Body.Close()
 
 	if response.StatusCode == 200 {
+		fmt.Println("response.StatusCode")
 		str, _ := ioutil.ReadAll(response.Body)
 		bodystr := string(str)
 		fmt.Println(bodystr)
