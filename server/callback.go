@@ -87,11 +87,16 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	// callback_body: filename=user-dir%2F537078.gif&size=7005&mimeType=image%2Fgif&height=64&width=64
 
 
-
 	// #compose authorization string
 
 	pos := r.URL
+
 	//pos := r.URL
+	fmt.Println(pos)
+
+	ss := r.URL.Path
+	fmt.Println("ss := r.URL.Path")
+	fmt.Println(ss)
 
 
 

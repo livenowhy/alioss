@@ -45,19 +45,24 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         #compose authorization string
         auth_str = ''
 
+        // filename = user - dir % 2
+        F537078.gif & size = 7005 & mimeType = image % 2
+        Fgif & height = 64 & width = 64
+        // ?    ??  # E?J??64P
 
-        print "self.path"
-        print self.path
+        print "self.path" # self.path
+        print self.path   # /callback
         pos = self.path.find('?')
         if -1 == pos:
             auth_str = self.path + '\n' + callback_body
         else:
             auth_str = urllib2.unquote(self.path[0:pos]) + self.path[pos:] + '\n' + callback_body
-        print auth_str
+        print auth_str  # /callback
+                        # filename=user-dir%2F537078.gif&size=7005&mimeType=image%2Fgif&height=64&width=64
 
         #verify authorization
         auth_md5 = md5.new(auth_str).digest()
-        print auth_md5
+        print auth_md5  # 乱码
         # bio = BIO.MemoryBuffer(pub_key)
         # rsa_pub = RSA.load_pub_key_bio(bio)
         # try:
