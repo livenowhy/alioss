@@ -15,8 +15,7 @@ import base64
 import md5
 import urllib2
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from M2Crypto import RSA
-from M2Crypto import BIO
+
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
@@ -45,6 +44,10 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
         #compose authorization string
         auth_str = ''
+
+
+        print "self.path"
+        print self.path
         pos = self.path.find('?')
         if -1 == pos:
             auth_str = self.path + '\n' + callback_body
@@ -54,20 +57,21 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
         #verify authorization
         auth_md5 = md5.new(auth_str).digest()
-        bio = BIO.MemoryBuffer(pub_key)
-        rsa_pub = RSA.load_pub_key_bio(bio)
-        try:
-            result = rsa_pub.verify(auth_md5, authorization, 'md5')
-        except e:
-            result = False
-
-        if not result:
-            print 'Authorization verify failed!'
-            print 'Public key : %s' % (pub_key)
-            print 'Auth string : %s' % (auth_str)
-            self.send_response(400)
-            self.end_headers()
-            return
+        print auth_md5
+        # bio = BIO.MemoryBuffer(pub_key)
+        # rsa_pub = RSA.load_pub_key_bio(bio)
+        # try:
+        #     result = rsa_pub.verify(auth_md5, authorization, 'md5')
+        # except e:
+        #     result = False
+        #
+        # if not result:
+        #     print 'Authorization verify failed!'
+        #     print 'Public key : %s' % (pub_key)
+        #     print 'Auth string : %s' % (auth_str)
+        #     self.send_response(400)
+        #     self.end_headers()
+        #     return
 
         #do something accoding to callback_body
 
@@ -86,7 +90,7 @@ class MyHTTPServer(HTTPServer):
 
 if '__main__' == __name__:
     server_ip = '0.0.0.0'
-    server_port = 23450
+    server_port = 8765
 
     server = MyHTTPServer(server_ip, server_port)
     server.serve_forever()

@@ -80,16 +80,17 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(content_length)
 
 	callback_body, _ := ioutil.ReadAll(r.Body)
-	fmt.Println("callback_body")
-	fmt.Println(callback_body)
 	bodystr := string(callback_body)
+
+	fmt.Println("callback_body")
 	fmt.Println(bodystr)
-	//content_length := r.Header["content-length"]
-	//callback_body := r.Body.Read()
-	//// callback_body = self.rfile.read(int(content_length))
-	//
-	//
-	//// compose authorization string
+	// callback_body: filename=user-dir%2F537078.gif&size=7005&mimeType=image%2Fgif&height=64&width=64
+
+
+
+	// #compose authorization string
+
+	pos := r.URL
 	//pos := r.URL
 
 
