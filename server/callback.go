@@ -39,6 +39,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	pub_key_url_str := string(pub_key_url)
 
+	fmt.Println(pub_key_url_str)
+
 	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
 	response, _ := client.Do(request)
 	defer response.Body.Close()
@@ -48,7 +50,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		bodystr := string(str)
 		fmt.Println(bodystr)
 	}
-	//// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
+
+	fmt.Println("get public key is ok")
+	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
 	//
 	//
 	//// get authorization
@@ -117,7 +121,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//w.Header().Set("Content-Length", )
 	io.WriteString(w, string(response_oss))
-
 }
 
 
