@@ -1,12 +1,13 @@
 package server
 
 import (
-	"encoding/base64"
+	//"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"io/ioutil"
+	"encoding/base64"
 )
 
 
@@ -19,8 +20,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
-	pub_key_url_base64 := r.Header["x-oss-pub-key-url"]
-	pub_key_url := base64.StdEncoding.EncodeToString(pub_key_url_base64)
+	pub_key_url_base64 := r.Header.Get("x-oss-pub-key-url")
+
+	fmt.Println(pub_key_url_base64)
+
+
+	pub_key_url := base64.StdEncoding.EncodeToString([]byte(pub_key_url_base64))
+	fmt.Println(pub_key_url)
 
 	var client = &http.Client{}
 
@@ -33,23 +39,23 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		bodystr := string(str)
 		fmt.Println(bodystr)
 	}
-	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
-
-
-	// get authorization
-	authorization_base64 := r.Header["authorization"] // Authorization
-	authorization := base64.StdEncoding.EncodeToString(authorization_base64)
-
-	fmt.Printf("authorization : %s", authorization)
-
-	// get callback body
-	content_length := r.Header["content-length"]
-	callback_body := r.Body.Read()
-	// callback_body = self.rfile.read(int(content_length))
-
-
-	// compose authorization string
-	pos := r.URL
+	//// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
+	//
+	//
+	//// get authorization
+	//authorization_base64 := r.Header["authorization"] // Authorization
+	//authorization := base64.StdEncoding.EncodeToString(authorization_base64)
+	//
+	//fmt.Printf("authorization : %s", authorization)
+	//
+	//// get callback body
+	//content_length := r.Header["content-length"]
+	//callback_body := r.Body.Read()
+	//// callback_body = self.rfile.read(int(content_length))
+	//
+	//
+	//// compose authorization string
+	//pos := r.URL
 
 
 
@@ -99,12 +105,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("json err:", err)
 	}
-	w.Header().Set()
-
-
-
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Length", )
+	//w.Header().Set("Content-Length", )
 	io.WriteString(w, string(response_oss))
 
 }

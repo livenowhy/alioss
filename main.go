@@ -17,6 +17,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", server.PolicyCallback)
+	http.HandleFunc("/callback", server.Callback)
 	http.ListenAndServe(":1234", nil)
 	fmt.Println(c.AliyunKey.AccessKeySecret)
 }
