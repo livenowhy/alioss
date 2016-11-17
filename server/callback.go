@@ -74,12 +74,16 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("authorization :")
 	fmt.Println(string(authorization))
 
-
-
 	// get callback body
 	content_length := r.Header.Get("content-length")
 	fmt.Println("content_length")
 	fmt.Println(content_length)
+
+	callback_body, _ := ioutil.ReadAll(r.Body)
+	fmt.Println("callback_body")
+	fmt.Println(callback_body)
+	bodystr := string(callback_body)
+	fmt.Println(bodystr)
 	//content_length := r.Header["content-length"]
 	//callback_body := r.Body.Read()
 	//// callback_body = self.rfile.read(int(content_length))
