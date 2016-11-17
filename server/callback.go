@@ -13,6 +13,7 @@ import (
 
 
 
+
 func Callback(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
@@ -53,15 +54,24 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("get public key is ok")
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
-	//
-	//
-	//// get authorization
-	//authorization_base64 := r.Header["authorization"] // Authorization
-	//authorization := base64.StdEncoding.EncodeToString(authorization_base64)
-	//
-	//fmt.Printf("authorization : %s", authorization)
-	//
-	//// get callback body
+
+
+	// get authorization
+	authorization_base64 := r.Header.Get("authorization") // Authorization
+
+	fmt.Println(authorization_base64)
+	authorization , err:= base64.StdEncoding.DecodeString(authorization_base64)
+	if err != nil {
+		fmt.Println("error authorization_base64 :", err)
+		return
+	}
+	fmt.Printf("authorization : %s", string(authorization))
+
+
+	// get callback body
+	content_length := r.Header.Get("content-length")
+	fmt.Println("content_length")
+	fmt.Println(content_length)
 	//content_length := r.Header["content-length"]
 	//callback_body := r.Body.Read()
 	//// callback_body = self.rfile.read(int(content_length))
