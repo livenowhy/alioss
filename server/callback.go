@@ -43,8 +43,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(pub_key_url_str)
 
 	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
-	response, _ := client.Do(request)
+	response, err := client.Do(request)
 	defer response.Body.Close()
+
+	if err != nil {
+		fmt.Println("err != nil")
+		return
+	}
 
 	if response.StatusCode == 200 {
 		fmt.Println("response.StatusCode")
