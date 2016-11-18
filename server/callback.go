@@ -80,12 +80,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
 	pub_key_url_base64 := r.Header.Get("x-oss-pub-key-url")
-
 	fmt.Println(pub_key_url_base64)
-
 	// aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0=
 	// https://gosspublic.alicdn.com/callback_pub_key_v1.pem
-
 	pub_key_url, err := base64.StdEncoding.DecodeString(pub_key_url_base64)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -94,12 +91,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(pub_key_url)
 
 	var client = &http.Client{}
-
-
 	pub_key_url_str := string(pub_key_url)
 
 	fmt.Println(pub_key_url_str)
-
 	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
 	response, err := client.Do(request)
 	defer response.Body.Close()
@@ -112,9 +106,11 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	var public_key []byte
 	if response.StatusCode == 200 {
 		fmt.Println("response.StatusCode")
-		public_key, _ := ioutil.ReadAll(response.Body)
+		public_key, _ = ioutil.ReadAll(response.Body)
 		public_key_str := string(public_key)
 		fmt.Println(public_key_str)
+	} else {
+		return
 	}
 
 	fmt.Println("get public key is ok")
