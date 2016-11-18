@@ -31,7 +31,7 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
 
 
 	if block == nil {
-		fmt.Println(public_key)
+		fmt.Println(string(public_key))
 		fmt.Printf("Failed to pem.Decode(public_key) \n")
 		return true, nil
 	}
@@ -106,11 +106,12 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var public_key string
 	if response.StatusCode == 200 {
 		fmt.Println("response.StatusCode")
 		str, _ := ioutil.ReadAll(response.Body)
-		bodystr := string(str)
-		fmt.Println(bodystr)
+		public_key := string(str)
+		fmt.Println(public_key)
 	}
 
 	fmt.Println("get public key is ok")
@@ -162,7 +163,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("验证签名")
 
-	pass, err := RSAVerify([]byte(auth_str), authorization, pub_key_url)
+	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)
 	if pass == false {
 		fmt.Println("is error")
 		err.Error()
