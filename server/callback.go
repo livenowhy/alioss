@@ -15,6 +15,7 @@ import (
     "crypto/x509"
     //"encoding/hex"
     "encoding/pem"
+	"crypto/md5"
 )
 
 
@@ -50,7 +51,7 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     rsaPub, _ := pub.(*rsa.PublicKey)
 
     //步骤2，计算代签名字串的SHA1哈希
-    t := sha1.New()
+    t := md5.New()
     io.WriteString(t, string(src))
     digest := t.Sum(nil)
 
@@ -61,7 +62,7 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     //fmt.Printf("base decoder: %v, %v\n", string(sign), hexSig)
 
     //步骤4，调用rsa包的VerifyPKCS1v15验证签名有效性
-    err = rsa.VerifyPKCS1v15(rsaPub, crypto.SHA1, digest, sign)
+    err = rsa.VerifyPKCS1v15(rsaPub, crypto.MD5, digest, sign)
     if err != nil {
         fmt.Println("Verify sig error, reason: ", err)
         return false, err
@@ -170,34 +171,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("is error")
 		err.Error()
 	}
-
-	// RSAVerify(src []byte, sign []byte, public_key string) (pass bool, err error)
-
-
-      //  auth_md5 = md5.new(auth_str).digest()
-      //  bio = BIO.MemoryBuffer(pub_key)
-      //  rsa_pub = RSA.load_pub_key_bio(bio)
-      //  try:
-      //      result = rsa_pub.verify(auth_md5, authorization, 'md5')
-      //  except e:
-      //      result = False
-	 //
-      //  if not result:
-      //      print 'Authorization verify failed!'
-      //      print 'Public key : %s' % (pub_key)
-      //      print 'Auth string : %s' % (auth_str)
-      //      self.send_response(400)
-      //      self.end_headers()
-      //      return
-	 //
-      //  #do something accoding to callback_body
-	 //
-
-      //  self.send_response(200)
-
-      //  self.send_header('', str(len(resp_body)))
-
-      //  self.wfile.write(resp_body)
 
 
 	// response to OSS
