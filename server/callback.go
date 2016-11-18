@@ -14,11 +14,13 @@ import (
 	"crypto/md5"
 )
 
-
+type ResponseOss struct {
+	Status string `json:"Status"`
+}
 
 /***************************************************************
 *RSA签名验证
-*src:待验证的字串，sign:支付宝返回的签名
+*src:待验证的字串，sign:aliyun返回的签名
 *pass:返回true表示验证通过
 *err :当pass返回false时，err是出错的原因
 ****************************************************************/
@@ -35,9 +37,6 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
 		fmt.Printf("Failed to pem.Decode(public_key) \n")
 		return true, nil
 	}
-
-
-
 
     pub, err := x509.ParsePKIXPublicKey(block.Bytes)
     if err != nil {
@@ -157,17 +156,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		//
 
 
-	// 验证签名
-
-	fmt.Println("验证签名")
-
 	fmt.Println(string(public_key))
+	// 验证签名
 	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)
 	if pass == false {
 		fmt.Println("is error")
 		err.Error()
 	}
-
 
 	// response to OSS
 	var ResponseOss ResponseOss
@@ -183,6 +178,3 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 }
 
 
-type ResponseOss struct {
-	Status string `json:"Status"`
-}
