@@ -54,14 +54,14 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     io.WriteString(t, string(src))
     digest := t.Sum(nil)
 
-    //步骤3，base64 decode,必须步骤，支付宝对返回的签名做过base64 encode必须要反过来decode才能通过验证
-    data, _ := base64.StdEncoding.DecodeString(string(sign))
+    ////步骤3，base64 decode,必须步骤，支付宝对返回的签名做过base64 encode必须要反过来decode才能通过验证
+    //data, _ := base64.StdEncoding.DecodeString(string(sign))
 
-    hexSig := hex.EncodeToString(data)
-    fmt.Printf("base decoder: %v, %v\n", string(sign), hexSig)
+    //hexSig := hex.EncodeToString(data)
+    //fmt.Printf("base decoder: %v, %v\n", string(sign), hexSig)
 
     //步骤4，调用rsa包的VerifyPKCS1v15验证签名有效性
-    err = rsa.VerifyPKCS1v15(rsaPub, crypto.SHA1, digest, data)
+    err = rsa.VerifyPKCS1v15(rsaPub, crypto.SHA1, digest, sign)
     if err != nil {
         fmt.Println("Verify sig error, reason: ", err)
         return false, err
