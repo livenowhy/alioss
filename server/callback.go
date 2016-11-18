@@ -9,11 +9,53 @@ import (
 	"io/ioutil"
 	"encoding/base64"
 	//"crypto/md5"
-	//"crypto/rsa"
-
+    "crypto"
+    "crypto/rsa"
+    "crypto/sha1"
+    "crypto/x509"
+    "encoding/hex"
+    "encoding/pem"
 )
 
 
+
+/***************************************************************
+*RSA签名验证
+*src:待验证的字串，sign:支付宝返回的签名
+*pass:返回true表示验证通过
+*err :当pass返回false时，err是出错的原因
+****************************************************************/
+func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error) {
+    //步骤1，加载RSA的公钥
+    block, _ := pem.Decode(public_key)
+
+    pub, err := x509.ParsePKIXPublicKey(block.Bytes)
+    if err != nil {
+        fmt.Printf("Failed to parse RSA public key: %s\n", err)
+        return
+    }
+    rsaPub, _ := pub.(*rsa.PublicKey)
+
+    //步骤2，计算代签名字串的SHA1哈希
+    t := sha1.New()
+    io.WriteString(t, string(src))
+    digest := t.Sum(nil)
+
+    //步骤3，base64 decode,必须步骤，支付宝对返回的签名做过base64 encode必须要反过来decode才能通过验证
+    data, _ := base64.StdEncoding.DecodeString(string(sign))
+
+    hexSig := hex.EncodeToString(data)
+    fmt.Printf("base decoder: %v, %v\n", string(sign), hexSig)
+
+    //步骤4，调用rsa包的VerifyPKCS1v15验证签名有效性
+    err = rsa.VerifyPKCS1v15(rsaPub, crypto.SHA1, digest, data)
+    if err != nil {
+        fmt.Println("Verify sig error, reason: ", err)
+        return false, err
+    }
+
+    return true, nil
+}
 
 
 
@@ -91,9 +133,12 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 
 	// #compose authorization string
-	pos := r.URL.Path
+	path := r.URL.Path
 	fmt.Println("ss := r.URL.Path")
-	fmt.Println(pos)
+	fmt.Println(path)
+
+	auth_str := path + "\n" + bodystr
+	fmt.Println(auth_str)
 		//
 	     //   if -1 == pos:
         //    auth_str = self.path + '\n' + callback_body
@@ -103,20 +148,17 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		//
 
 
+	// 验证签名
+
+	pass, err := RSAVerify([]byte(auth_str), authorization, pub_key_url)
+	if pass == false {
+		fmt.Println("is error")
+		err.Error()
+	}
+
+	// RSAVerify(src []byte, sign []byte, public_key string) (pass bool, err error)
 
 
-      //  auth_str = ''
-      //  pos = self.path.find('?')
-      //  if -1 == pos:
-      //      auth_str = self.path + '\n' + callback_body
-      //  else:
-      //      auth_str = urllib2.unquote(self.path[0:pos]) + self.path[pos:] + '\n' + callback_body
-      //  print auth_st
-
-
-
-
-      //  #
       //  auth_md5 = md5.new(auth_str).digest()
       //  bio = BIO.MemoryBuffer(pub_key)
       //  rsa_pub = RSA.load_pub_key_bio(bio)
