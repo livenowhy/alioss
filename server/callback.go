@@ -29,6 +29,15 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     //步骤1，加载RSA的公钥
     block, _ := pem.Decode(public_key)
 
+
+	if block == nil {
+		fmt.Printf("Failed to pem.Decode(public_key) \n")
+		return true, nil
+	}
+
+
+
+
     pub, err := x509.ParsePKIXPublicKey(block.Bytes)
     if err != nil {
         fmt.Printf("Failed to parse RSA public key: %s\n", err)
@@ -149,6 +158,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 
 	// 验证签名
+
+	fmt.Println("验证签名")
 
 	pass, err := RSAVerify([]byte(auth_str), authorization, pub_key_url)
 	if pass == false {
