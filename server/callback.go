@@ -1,19 +1,15 @@
 package server
 
 import (
-	//"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"io/ioutil"
 	"encoding/base64"
-	//"crypto/md5"
     "crypto"
     "crypto/rsa"
-    //"crypto/sha1"
     "crypto/x509"
-    //"encoding/hex"
     "encoding/pem"
 	"crypto/md5"
 )
