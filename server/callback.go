@@ -31,6 +31,7 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
 
 
 	if block == nil {
+		fmt.Println(public_key)
 		fmt.Printf("Failed to pem.Decode(public_key) \n")
 		return true, nil
 	}
