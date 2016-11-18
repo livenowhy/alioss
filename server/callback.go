@@ -91,9 +91,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	var client = &http.Client{}
 	pub_key_url_str := string(pub_key_url)
 
+	fmt.Println("begin get")
+
 	fmt.Println(pub_key_url_str)
 	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
+	fmt.Println("begin 02 get")
 	response, err := client.Do(request)
+	fmt.Println("begin 03 get")
 	defer response.Body.Close()
 
 	if err != nil {
