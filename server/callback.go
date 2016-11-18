@@ -11,7 +11,7 @@ import (
 	//"crypto/md5"
     "crypto"
     "crypto/rsa"
-    "crypto/sha1"
+    //"crypto/sha1"
     "crypto/x509"
     //"encoding/hex"
     "encoding/pem"
