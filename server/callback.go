@@ -8,6 +8,13 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/base64"
+	"crypto/md5"
+	//"crypto/rsa"
+	"crypto/"
+	"/" +
+"" +
+"from M2Crypto import RSA
+from M2Crypto import BIO"
 )
 
 
@@ -88,30 +95,35 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 
 	// #compose authorization string
-
-	pos := r.URL
-
-	//pos := r.URL
-	fmt.Println(pos)
-
-	ss := r.URL.Path
+	pos := r.URL.Path
 	fmt.Println("ss := r.URL.Path")
-	fmt.Println(ss)
+	fmt.Println(pos)
+		//
+	     //   if -1 == pos:
+        //    auth_str = self.path + '\n' + callback_body
+        //else:
+        //    auth_str = urllib2.unquote(self.path[0:pos]) + self.path[pos:] + '\n' + callback_body
+	// 暂时不考虑这种情况
+		//
 
 
 
-
-
-      //  #
       //  auth_str = ''
       //  pos = self.path.find('?')
       //  if -1 == pos:
       //      auth_str = self.path + '\n' + callback_body
       //  else:
       //      auth_str = urllib2.unquote(self.path[0:pos]) + self.path[pos:] + '\n' + callback_body
-      //  print auth_str
-	 //
-      //  #verify authorization
+      //  print auth_st
+
+
+
+	// verify authorization
+	auth_st_byte := []byte(auth_st)
+	auth_md5 := md5.Sum(auth_st_byte)
+
+
+      //  #
       //  auth_md5 = md5.new(auth_str).digest()
       //  bio = BIO.MemoryBuffer(pub_key)
       //  rsa_pub = RSA.load_pub_key_bio(bio)
