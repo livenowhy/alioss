@@ -9,12 +9,8 @@ import (
 	"io/ioutil"
 	"encoding/base64"
 	"crypto/md5"
-	//"crypto/rsa"
-	"crypto/"
-	"/" +
-"" +
-"from M2Crypto import RSA
-from M2Crypto import BIO"
+	"crypto/rsa"
+
 )
 
 
@@ -108,6 +104,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 
 
+
       //  auth_str = ''
       //  pos = self.path.find('?')
       //  if -1 == pos:
@@ -117,10 +114,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
       //  print auth_st
 
 
-
-	// verify authorization
-	auth_st_byte := []byte(auth_st)
-	auth_md5 := md5.Sum(auth_st_byte)
 
 
       //  #
