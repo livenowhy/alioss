@@ -13,7 +13,7 @@ import (
     "crypto/rsa"
     "crypto/sha1"
     "crypto/x509"
-    "encoding/hex"
+    //"encoding/hex"
     "encoding/pem"
 )
 
