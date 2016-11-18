@@ -29,6 +29,9 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     //步骤1，加载RSA的公钥
     block, _ := pem.Decode(public_key)
 
+	fmt.Println("in RSAVerify -->")
+
+	fmt.Println(string(public_key))
 
 	if block == nil {
 		fmt.Println(string(public_key))
@@ -163,6 +166,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("验证签名")
 
+	fmt.Println(string(public_key))
 	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)
 	if pass == false {
 		fmt.Println("is error")
