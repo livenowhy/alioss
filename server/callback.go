@@ -65,7 +65,9 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     if err != nil {
         fmt.Println("Verify sig error, reason: ", err)
         return false, err
-    }
+    } else {
+		fmt.Println("Verify sig is ok, reason: ")
+	}
 
     return true, nil
 }
