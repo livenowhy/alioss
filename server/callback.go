@@ -106,12 +106,12 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var public_key string
+	var public_key []byte
 	if response.StatusCode == 200 {
 		fmt.Println("response.StatusCode")
-		str, _ := ioutil.ReadAll(response.Body)
-		public_key := string(str)
-		fmt.Println(public_key)
+		public_key, _ := ioutil.ReadAll(response.Body)
+		public_key_str := string(public_key)
+		fmt.Println(public_key_str)
 	}
 
 	fmt.Println("get public key is ok")
