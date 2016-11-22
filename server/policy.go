@@ -58,6 +58,9 @@ type CallbackParam struct {
 
 func get_policy_token() string {
 	now := time.Now().Unix()
+
+	fmt.Println("ONF.AliyunOss.ExpireTime")
+	fmt.Println(CONF.AliyunOss.ExpireTime)
 	expire_end := now + CONF.AliyunOss.ExpireTime
 	var tokenExpire = get_gmt_iso8601(expire_end)
 

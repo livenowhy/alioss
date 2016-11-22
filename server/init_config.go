@@ -49,6 +49,14 @@ func LoadConfig(fileName string) (*Config, error) {
 	}
 
 	fmt.Println(c.AliyunKey.AccessKeyID)
+	fmt.Println(c.AliyunKey.AccessKeySecret)
+
+	fmt.Println(c.AliyunOss.HostOuter)
+	fmt.Println(c.AliyunOss.HostIn)
+	fmt.Println(c.AliyunOss.CallbackUrl)
+	fmt.Println(c.AliyunOss.ExpireTime)
+	fmt.Println(c.AliyunOss.UploadDir)
+
 
 	return c, nil
 }
