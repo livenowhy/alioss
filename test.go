@@ -3,6 +3,10 @@ package main
 import (
     "encoding/base64"
     "fmt"
+	"strings"
+	//"net/http/httputil"
+	"golang.org/x/net/dict"
+	"html"
 )
 
 
@@ -24,6 +28,27 @@ func main() {
 		fmt.Println("error:", err)
 		return
 	}
+
+	path := "/swd=golang%20sds?sss"
+	callback_body := "callback_body"
+
+
+    pos := strings.Index(path, "?")
+
+	if -1 == pos {
+		auth_str := path + "\n" + callback_body
+		fmt.Println(auth_str)
+	} else {
+
+		fmt.Println(html.UnescapeString(path[0:pos]))
+		auth_str := dict.UnescapeString(path[0:pos]) + path[pos:] + "\n" + callback_body
+        fmt.Println(auth_str)
+		//auth_str = urllib2.unquote(path[0:pos]) + path[pos:] + '\n' + callback_body
+	}
+
+
+	fmt.Println(pos)
+    //callback_body := "callback_body"
 
 
 	fmt.Println(string(data))
