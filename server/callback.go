@@ -94,7 +94,11 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("begin get")
 
 	fmt.Println(pub_key_url_str)
-	request, _ := http.NewRequest("GET", pub_key_url_str, nil)
+	request, err := http.NewRequest("GET", pub_key_url_str, nil)
+	if err != nil {
+		fmt.Println(" http.NewRequest err != nil")
+		return
+	}
 	fmt.Println("begin 02 get")
 	response, err := client.Do(request)
 	fmt.Println("begin 03 get")

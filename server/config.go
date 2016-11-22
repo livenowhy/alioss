@@ -48,3 +48,20 @@ func LoadConfig(fileName string) (*Config, error) {
 
 	return c, nil
 }
+
+
+
+// server 包下的全局配置变量
+
+var CONF = &Config{}
+
+func init() {
+	c, err := LoadConfig("./conf/key.yml")
+	if err != nil {
+		glog.Exitf("init to load config: %s", err)
+	}
+	fmt.Println("init_config")
+	fmt.Println(c.AliyunKey.AccessKeySecret)
+
+	CONF = c
+}
