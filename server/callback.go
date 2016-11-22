@@ -101,6 +101,12 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("begin 02 get")
 	response, err := client.Do(request)
+	if err != nil {
+		fmt.Println(" client.Do(request) err != nil")
+		fmt.Println(err.Error())
+		return
+	}
+
 	fmt.Println("begin 03 get")
 	defer response.Body.Close()
 
