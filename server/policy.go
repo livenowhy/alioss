@@ -17,19 +17,8 @@ import (
 	"time"
 )
 
-//var accessKeyId string = "6MKOqxGiGU4AUk44"
-//var accessKeySecret string = "ufu7nS8kS59awNihtjSonMETLI0KLy"
-//var host string = "http://post-test.oss-cn-hangzhou.aliyuncs.com"
 
 
-
-var accessKeyId string = "aifLgFuyz092J0WO"
-var accessKeySecret string = "5IRKR16bmjQaypC54MzGtwFROXtTmN"
-//var host string = "http://boxlinker-develop.livenowhy.com"
-var host string = "http://boxlinker-develop.oss-cn-shanghai.aliyuncs.com"
-var expire_time int64 = 60
-var upload_dir string = "user-dir/"
-var callbackUrl string = "http://123.56.9.18:8765/callback"  // oss 回调
 
 const (
 	base64Table = "123QRSTUabcdVWXYZHijKLAWDCABDstEFGuvwxyzGHIJklmnopqr234560178912"
@@ -69,7 +58,7 @@ type CallbackParam struct {
 
 func get_policy_token() string {
 	now := time.Now().Unix()
-	expire_end := now + expire_time
+	expire_end := now + CONF.AliyunOss.ExpireTime
 	var tokenExpire = get_gmt_iso8601(expire_end)
 
 	//create post policy json
@@ -78,18 +67,18 @@ func get_policy_token() string {
 	var condition []string
 	condition = append(condition, "starts-with")
 	condition = append(condition, "$key")
-	condition = append(condition, upload_dir)
+	condition = append(condition, CONF.AliyunOss.UploadDir)
 	config.Conditions = append(config.Conditions, condition)
 
 	//calucate signature
 	result, err := json.Marshal(config)
 	debyte := base64.StdEncoding.EncodeToString(result)
-	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(accessKeySecret))
+	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(CONF.AliyunKey.AccessKeySecret))
 	io.WriteString(h, debyte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
 	var callbackParam CallbackParam
-	callbackParam.CallbackUrl = callbackUrl
+	callbackParam.CallbackUrl = CONF.AliyunOss.CallbackUrl
 	callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callback_str, err := json.Marshal(callbackParam)
@@ -99,11 +88,11 @@ func get_policy_token() string {
 	callbackBase64 := base64.StdEncoding.EncodeToString(callback_str)
 
 	var policyToken PolicyToken
-	policyToken.AccessKeyId = accessKeyId
-	policyToken.Host = host
+	policyToken.AccessKeyId = CONF.AliyunKey.AccessKeyID
+	policyToken.Host = CONF.AliyunOss.HostOuter
 	policyToken.Expire = expire_end
 	policyToken.Signature = string(signedStr)
-	policyToken.Directory = upload_dir
+	policyToken.Directory = CONF.AliyunOss.UploadDir
 	policyToken.Policy = string(debyte)
 	policyToken.Callback = string(callbackBase64)
 	response, err := json.Marshal(policyToken)
