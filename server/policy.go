@@ -15,6 +15,7 @@ import (
 	"io"
 	"net/http"
 	"time"
+	"github.com/golang/glog"
 )
 
 
@@ -54,6 +55,19 @@ type CallbackParam struct {
 	CallbackUrl      string `json:"callbackUrl"`
 	CallbackBody     string `json:"callbackBody"`
 	CallbackBodyType string `json:"callbackBodyType"`
+}
+
+
+// server 包下的全局配置变量
+var CONF *Config
+
+func init() {
+	CONF, err := LoadConfig("./conf/key.yml")
+	if err != nil {
+		glog.Exitf("init to load config: %s", err)
+	}
+	fmt.Println("init_config")
+	fmt.Println(CONF.AliyunKey.AccessKeySecret)
 }
 
 func get_policy_token() string {
