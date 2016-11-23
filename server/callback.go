@@ -109,11 +109,15 @@ func GetPublicKey(pub_key_url string) (retbool bool, public_key []byte) {
 
 
 func GetPublicKeyTwo(pub_key_url string) (retbool bool, public_key []byte) {
-	u, _ := url.Parse(pub_key_url)
-	res, err := http.Get(u.String())
+	u, err := url.Parse(pub_key_url)
 
+	fmt.Println("url.Parse(pub_key_url)")
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, nil
+	}
 	fmt.Printf("---GetPublicKeyTwo---")
-
+	res, err := http.Get(u.String())
 	if err != nil {
 		fmt.Println(err.Error())
 		return false, nil
