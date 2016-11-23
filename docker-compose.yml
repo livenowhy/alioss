@@ -1,0 +1,6 @@
+version: '2'
+services:
+  auth:
+    image: index.boxlinker.com/boxlinker/oss_callback:1.0.1
+    ports:
+    - "8765:8765"
