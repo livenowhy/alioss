@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"io/ioutil"
 	"encoding/base64"
     "crypto"
