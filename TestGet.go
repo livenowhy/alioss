@@ -17,6 +17,8 @@ func HttpGet()  {
 		return
 	}
 
+	fmt.Println("HttpGet sdsdsdsdsdsd")
+
 	result, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
 	if err != nil {
