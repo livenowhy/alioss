@@ -43,7 +43,11 @@ func HttpGet()  {
 func main() {
 
 	for i := 0; i < 30; i ++ {
-		HttpGet()
+		go HttpGet()
 	}
+
+   ch1 := make(chan int)
+
+    <- ch1
 
 }
