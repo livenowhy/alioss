@@ -10,7 +10,10 @@ import (
 
 func HttpGet()  {
 	//u, _ := url.Parse("https://gosspublic.alicdn.com/callback_pub_key_v1.pem")
+
+	fmt.Println("HttpGet 00")
 	res, err := http.Get("https://gosspublic.alicdn.com/callback_pub_key_v1.pem")
+	fmt.Println("HttpGet 001")
 
 	defer res.Body.Close()
 	fmt.Println("HttpGet 01")
