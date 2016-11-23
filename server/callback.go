@@ -112,17 +112,22 @@ func GetPublicKeyTwo(pub_key_url string) (retbool bool, public_key []byte) {
 	u, _ := url.Parse(pub_key_url)
 	res, err := http.Get(u.String())
 
+	fmt.Printf("---GetPublicKeyTwo---")
+
 	if err != nil {
 		fmt.Println(err.Error())
 		return false, nil
 	}
 
 	result, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
+
+	fmt.Println("-- ioutil.ReadAll --")
 	if err != nil {
 		fmt.Println(err.Error())
 		return false, nil
 	}
+	fmt.Println("-- ioutil.ReadAll -- 02")
+	res.Body.Close()
 	return true, result
 }
 
