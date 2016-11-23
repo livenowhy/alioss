@@ -15,14 +15,16 @@ func HttpGet()  {
 	res, err := http.Get("https://gosspublic.alicdn.com/callback_pub_key_v1.pem")
 	fmt.Println("HttpGet 001")
 
-	defer res.Body.Close()
-	fmt.Println("HttpGet 01")
+
 
 	if err != nil {
 		fmt.Println("HttpGet 02")
 		log.Fatal(err)
 		return
 	}
+
+	defer res.Body.Close()
+	fmt.Println("HttpGet 01")
 
 	fmt.Println("HttpGet 03")
 
