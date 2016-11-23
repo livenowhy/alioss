@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"io/ioutil"
 	"encoding/base64"
     "crypto"
@@ -68,7 +69,64 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     return true, nil
 }
 
+func GetPublicKey(pub_key_url string) (retbool bool, public_key []byte) {
+	var client = &http.Client{}
+	pub_key_url_str := string(pub_key_url)
 
+	fmt.Println("begin get")
+	fmt.Println(pub_key_url_str)
+	request, err := http.NewRequest("GET", pub_key_url_str, nil)
+	if err != nil {
+		fmt.Println(" http.NewRequest err != nil")
+		return false, nil
+	}
+	fmt.Println("begin 02 get")
+	response, err := client.Do(request)
+	if err != nil {
+		fmt.Println(" client.Do(request) err != nil")
+		fmt.Println(err.Error())
+		return false, nil
+	}
+
+	fmt.Println("begin 03 get")
+	defer response.Body.Close()
+
+	if err != nil {
+		fmt.Println("err != nil")
+		return false, nil
+	}
+
+	var public_key []byte
+	if response.StatusCode == 200 {
+		fmt.Println("response.StatusCode")
+		public_key, _ = ioutil.ReadAll(response.Body)
+		public_key_str := string(public_key)
+		fmt.Println(public_key_str)
+		return true, public_key
+	} else {
+		return false, nil
+	}
+}
+
+
+
+func GetPublicKeyTwo(pub_key_url string) (retbool bool, public_key []byte) {
+	u, _ := url.Parse(pub_key_url)
+	res, err := http.Get(u.String())
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, nil
+	}
+
+	result, err := ioutil.ReadAll(res.Body)
+	res.Body.Close()
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, nil
+	}
+	return true, result
+}
 
 func Callback(w http.ResponseWriter, r *http.Request) {
 
@@ -88,45 +146,14 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(pub_key_url)
 
-	var client = &http.Client{}
-	pub_key_url_str := string(pub_key_url)
-
-	fmt.Println("begin get")
-
-	fmt.Println(pub_key_url_str)
-	request, err := http.NewRequest("GET", pub_key_url_str, nil)
-	if err != nil {
-		fmt.Println(" http.NewRequest err != nil")
-		return
-	}
-	fmt.Println("begin 02 get")
-	response, err := client.Do(request)
-	if err != nil {
-		fmt.Println(" client.Do(request) err != nil")
-		fmt.Println(err.Error())
-		return
-	}
-
-	fmt.Println("begin 03 get")
-	defer response.Body.Close()
-
-	if err != nil {
-		fmt.Println("err != nil")
-		return
-	}
-
-	var public_key []byte
-	if response.StatusCode == 200 {
-		fmt.Println("response.StatusCode")
-		public_key, _ = ioutil.ReadAll(response.Body)
-		public_key_str := string(public_key)
-		fmt.Println(public_key_str)
-	} else {
+	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
+	retbool, public_key := GetPublicKeyTwo(pub_key_url)
+	if !retbool {
 		return
 	}
 
 	fmt.Println("get public key is ok")
-	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
+
 
 
 	// get authorization
