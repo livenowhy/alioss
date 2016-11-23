@@ -144,9 +144,11 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	// https://gosspublic.alicdn.com/callback_pub_key_v1.pem
 	pub_key_url, err := base64.StdEncoding.DecodeString(pub_key_url_base64)
 	if err != nil {
-		fmt.Println("error:", err)
+		fmt.Println("err != nil --2 ")
+		fmt.Println("error:", err.Error())
 		return
 	}
+	fmt.Println("pub_key_url")
 	fmt.Println(pub_key_url)
 
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
