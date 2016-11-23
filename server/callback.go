@@ -71,11 +71,10 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
 
 func GetPublicKey(pub_key_url string) (retbool bool, public_key []byte) {
 	var client = &http.Client{}
-	pub_key_url_str := string(pub_key_url)
 
 	fmt.Println("begin get")
-	fmt.Println(pub_key_url_str)
-	request, err := http.NewRequest("GET", pub_key_url_str, nil)
+	fmt.Println(pub_key_url)
+	request, err := http.NewRequest("GET", pub_key_url, nil)
 	if err != nil {
 		fmt.Println(" http.NewRequest err != nil")
 		return false, nil
@@ -96,7 +95,6 @@ func GetPublicKey(pub_key_url string) (retbool bool, public_key []byte) {
 		return false, nil
 	}
 
-	var public_key []byte
 	if response.StatusCode == 200 {
 		fmt.Println("response.StatusCode")
 		public_key, _ = ioutil.ReadAll(response.Body)
@@ -147,7 +145,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(pub_key_url)
 
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
-	retbool, public_key := GetPublicKeyTwo(pub_key_url)
+
+	pub_key_url_str := string(pub_key_url)
+	retbool, public_key := GetPublicKeyTwo(pub_key_url_str)
 	if !retbool {
 		return
 	}
