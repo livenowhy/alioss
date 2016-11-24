@@ -4,6 +4,6 @@ build:
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-w' -o OssServer
 
 container: build
-	docker build --no-cache -t index.boxlinker.com/boxlinker/oss_callback:1.0.1 .
+	docker build -t index.boxlinker.com/boxlinker/oss_callback:1.0.1 .
 
-# docker build --no-cache index.boxlinker.com/boxlinker/registry_auth:dev .
+#docker build --no-cache -t index.boxlinker.com/boxlinker/oss_callback:1.0.1 .
