@@ -14,6 +14,7 @@ import (
 	"hash"
 	"io"
 	"time"
+	"github.com/liuzhangpei/alioss/utils"
 
 )
 
@@ -51,12 +52,11 @@ type PolicyToken struct {
 }
 
 type CallbackParam struct {
+	CallbackAction   *utils.CallbackActionType   `json:"callbackAction"`  // add lzp 上传动作(用户头像,镜像头像)
 	CallbackUrl      string `json:"callbackUrl"`
 	CallbackBody     string `json:"callbackBody"`
 	CallbackBodyType string `json:"callbackBodyType"`
 }
-
-
 
 
 // 阿里云访问秘钥
@@ -75,7 +75,8 @@ type AliYunOssConf struct {
 }
 
 
-func (aly *AliYunAccessKey)GetPolicyToken(dir string) string {
+// 阿里云获取授权码和回调地址
+func (aly *AliYunAccessKey)GetPolicyToken(dir string, action *utils.CallbackActionType) string {
 	now := time.Now().Unix()
 
 	fmt.Println("ONF.AliyunOss.ExpireTime")
@@ -101,6 +102,7 @@ func (aly *AliYunAccessKey)GetPolicyToken(dir string) string {
 
 	var callbackParam CallbackParam
 	callbackParam.CallbackUrl = aly.CallbackUrl
+	callbackParam.CallbackAction = action
 	callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callback_str, err := json.Marshal(callbackParam)

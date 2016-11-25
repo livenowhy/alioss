@@ -19,6 +19,9 @@ type Config struct {
 }
 
 
+
+
+
 // 加载配置文件数据,
 func LoadConfig(fileName string) (*Config, error) {
 	glog.V(2).Infof("LoadConfig: %s", fileName)
@@ -29,7 +32,6 @@ func LoadConfig(fileName string) (*Config, error) {
 		return nil, fmt.Errorf("could not read %s: %s", fileName, err)
 	}
 
-	fmt.Println("ssss")
 	c := &Config{}
 	glog.V(2).Infof("LoadConfig: %s", contents)
 	if err = yaml.Unmarshal(contents, c); err != nil {

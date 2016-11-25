@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"encoding/json"
+	"io/ioutil"
+	"github.com/liuzhangpei/alioss/utils"
 )
 
 
@@ -29,6 +31,8 @@ func error_response(statuscode int, msg string) string{
 // 获取
 func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
+	r.ParseForm() //解析参数，默认是不会解析的
+
 	w.Header().Set("Access-Control-Allow-Headers", "token")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -37,12 +41,38 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	headtoken := r.Header.Get("token")
 	fmt.Println(headtoken)
 
+		//result, _:= ioutil.ReadAll(r.Body)
+		//r.Body.Close()
+		//fmt.Printf("%s\n", result)
+
+	//结构已知，解析到结构体
+	result, err:= ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("ioutil.ReadAll is error")
+	}
+
+	fmt.Println(string(result))
+    var s utils.CallbackActionType;
+	err = json.Unmarshal([]byte(result), &s)
+	if err != nil {
+
+		fmt.Println("json.Unmarshal is error")
+	}
+
+	fmt.Println("sidsdsdsdsds")
+
+	fmt.Println(s.ActionResourceId)
+	fmt.Println(s.ActionType)
+
+
+
+
 	if headtoken == "" {
 		response := error_response(2, "token is nil")
 		io.WriteString(w, response)
 		return
 	}
-	_, err := cg.MysqlConf.CheckToken(headtoken)
+	_ , err = cg.MysqlConf.CheckToken(headtoken)
 	if err != nil {
 		response := error_response(2, "token is error")
 		io.WriteString(w, response)
@@ -52,7 +82,9 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(" toke is ok")
 
 
-	response := cg.AliyunKey.GetPolicyToken("user-dir/")
+	action := &utils.CallbackActionType{ActionType:"ssss", ActionResourceId:"ssdsd"}
+
+	response := cg.AliyunKey.GetPolicyToken("user-dir/", action)
 
 	fmt.Println("response end")
 

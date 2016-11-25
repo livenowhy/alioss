@@ -7,6 +7,7 @@ import (
 	"fmt"
 	//"github.com/liuzhangpei/alioss/aliyun"
 	//"github.com/liuzhangpei/alioss/aliyun"
+	"github.com/liuzhangpei/alioss/aliyun"
 )
 
 func main() {
@@ -23,6 +24,6 @@ func main() {
 
 
 	http.HandleFunc("/policy", c.PolicyCallback)
-	//http.HandleFunc("/callback", aliyun.Callback)
+	http.HandleFunc("/callback", aliyun.Callback)
 	http.ListenAndServe(":8765", nil)
 }
