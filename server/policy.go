@@ -55,11 +55,6 @@ type CallbackParam struct {
 }
 
 
-
-
-
-
-
 func get_policy_token() string {
 	now := time.Now().Unix()
 
@@ -110,9 +105,25 @@ func get_policy_token() string {
 }
 
 func PolicyCallback(w http.ResponseWriter, r *http.Request) {
-	response := get_policy_token()
+
+
+	r.Header.Set("Access-Control-Allow-Headers", "token")
+	r.Header.Set("Access-Control-Allow-Origin", "*")
+
+
 	fmt.Println("---->")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	token := r.Header.Get("token")
+	fmt.Println(token)
+
+	response := get_policy_token()
+
+	fmt.Println("response end")
+
+
+
+	//w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "token")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, response)
 }

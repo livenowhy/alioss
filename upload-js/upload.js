@@ -24,9 +24,10 @@ function send_request()
   
     if (xmlhttp!=null)
     {
-        phpUrl = 'http://123.56.9.18:8765/policy'
-        // phpUrl = 'http://0.0.0.0:8765/policy'
+        // phpUrl = 'http://123.56.9.18:8765/policy'
+        phpUrl = 'http://0.0.0.0:8765/policy'
         xmlhttp.open( "GET", phpUrl, false );
+        xmlhttp.setRequestHeader("token", "eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhND")
         xmlhttp.send( null );
         return xmlhttp.responseText
     }
