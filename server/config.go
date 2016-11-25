@@ -19,7 +19,6 @@ type Config struct {
 }
 
 
-
 // 加载配置文件数据,
 func LoadConfig(fileName string) (*Config, error) {
 	glog.V(2).Infof("LoadConfig: %s", fileName)
@@ -40,30 +39,10 @@ func LoadConfig(fileName string) (*Config, error) {
 	fmt.Println(c.AliyunKey.AccessKeyID)
 	fmt.Println(c.AliyunKey.AccessKeySecret)
 
-	fmt.Println(c.AliyunOss.HostOuter)
-	fmt.Println(c.AliyunOss.HostIn)
-	fmt.Println(c.AliyunOss.CallbackUrl)
-	fmt.Println(c.AliyunOss.ExpireTime)
 	fmt.Println(c.AliyunOss.UploadDir)
-	fmt.Println(c.MysqlConf.Charset)
+	//fmt.Println(c.MysqlConf.Charset)
 
 
 	return c, nil
 }
 
-
-
-// server 包下的全局配置变量
-
-var CONF = &Config{}
-
-func init() {
-	c, err := LoadConfig("./conf/key.yml")
-	if err != nil {
-		glog.Exitf("init to load config: %s", err)
-	}
-	fmt.Println("init_config")
-	fmt.Println(c.AliyunKey.AccessKeySecret)
-
-	CONF = c
-}

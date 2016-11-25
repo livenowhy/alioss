@@ -3,7 +3,7 @@
  * 2. 应用服务器返回上传policy和回调
  */
 
-package server
+package aliyun
 
 import (
 	"crypto/hmac"
@@ -13,8 +13,8 @@ import (
 	"fmt"
 	"hash"
 	"io"
-	"net/http"
 	"time"
+
 )
 
 
@@ -57,12 +57,30 @@ type CallbackParam struct {
 }
 
 
-func get_policy_token() string {
+
+
+// 阿里云访问秘钥
+type AliYunAccessKey struct {
+	AccessKeyID string `yaml:"AccessKeyID,omitempty"`
+	AccessKeySecret string `yaml:"AccessKeySecret,omitempty"`
+	HostOuter string `yaml:"HostOuter,omitempty"`   // 外网访问地址
+	HostIn string `yaml:"HostIn,omitempty"`   // 内网访问地址
+	CallbackUrl string `yaml:"CallbackUrl,omitempty"`   // oss 回调
+	ExpireTime int64 `yaml:"ExpireTime,omitempty"`
+}
+
+type AliYunOssConf struct {
+
+	UploadDir string `yaml:"UploadDir,omitempty"`
+}
+
+
+func (aly *AliYunAccessKey)GetPolicyToken(dir string) string {
 	now := time.Now().Unix()
 
 	fmt.Println("ONF.AliyunOss.ExpireTime")
-	fmt.Println(CONF.AliyunOss.ExpireTime)
-	expire_end := now + CONF.AliyunOss.ExpireTime
+	fmt.Println(aly.ExpireTime)
+	expire_end := now + aly.ExpireTime
 	var tokenExpire = get_gmt_iso8601(expire_end)
 
 	//create post policy json
@@ -71,18 +89,18 @@ func get_policy_token() string {
 	var condition []string
 	condition = append(condition, "starts-with")
 	condition = append(condition, "$key")
-	condition = append(condition, CONF.AliyunOss.UploadDir)
+	condition = append(condition, dir)
 	config.Conditions = append(config.Conditions, condition)
 
 	//calucate signature
 	result, err := json.Marshal(config)
 	debyte := base64.StdEncoding.EncodeToString(result)
-	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(CONF.AliyunKey.AccessKeySecret))
+	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(aly.AccessKeySecret))
 	io.WriteString(h, debyte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
 	var callbackParam CallbackParam
-	callbackParam.CallbackUrl = CONF.AliyunOss.CallbackUrl
+	callbackParam.CallbackUrl = aly.CallbackUrl
 	callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callback_str, err := json.Marshal(callbackParam)
@@ -93,11 +111,11 @@ func get_policy_token() string {
 
 	var policyToken PolicyToken
 	policyToken.StatusCode = 0
-	policyToken.AccessKeyId = CONF.AliyunKey.AccessKeyID
-	policyToken.Host = CONF.AliyunOss.HostOuter
+	policyToken.AccessKeyId = aly.AccessKeyID
+	policyToken.Host = aly.HostOuter
 	policyToken.Expire = expire_end
 	policyToken.Signature = string(signedStr)
-	policyToken.Directory = CONF.AliyunOss.UploadDir
+	policyToken.Directory = dir
 	policyToken.Policy = string(debyte)
 	policyToken.Callback = string(callbackBase64)
 	response, err := json.Marshal(policyToken)
@@ -107,44 +125,5 @@ func get_policy_token() string {
 	return string(response)
 }
 
-
-
-func error_response(statuscode int, msg string) string{
-	var policyToken PolicyToken
-	policyToken.StatusCode = statuscode
-	policyToken.ErrMsg = msg
-	response, err := json.Marshal(policyToken)
-	if err != nil {
-		fmt.Println("json err:", err)
-	}
-	return string(response)
-}
-
-func PolicyCallback(w http.ResponseWriter, r *http.Request) {
-
-		//w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "token")
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	fmt.Println("---->")
-	token := r.Header.Get("token")
-	fmt.Println(token)
-
-	if token == "" {
-		response := error_response(2, "token is nil")
-		io.WriteString(w, response)
-		return
-	}
-
-
-	response := get_policy_token()
-
-	fmt.Println("response end")
-
-
-
-	io.WriteString(w, response)
-}
 
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/liuzhangpei/alioss/models"
-	"github.com/liuzhangpei/alioss/server"
 )
 
 type MysqlConfig struct {
@@ -22,14 +21,14 @@ type TokenMysqlAuthorizer struct {
 	Config           *MysqlConfig   // 数据库配置
 }
 
-func NewTokenAuthorizer(c *MysqlConfig) (*TokenMysqlAuthorizer, error) {
+func (myc *MysqlConfig)NewTokenAuthorizer() (*TokenMysqlAuthorizer, error) {
 
 	glog.V(2).Infof("add lzp Auth NewACLMysqlAuthorizer: ")
-	engine_var := c.User + ":" + c.Pawd + "@tcp(" + c.Host + ":" + c.Port + ")/" + c.Cydb + "?charset=" + c.Charset
+	engine_var := myc.User + ":" + myc.Pawd + "@tcp(" + myc.Host + ":" + myc.Port + ")/" + myc.Cydb + "?charset=" + myc.Charset
 
 	authorizer := &TokenMysqlAuthorizer{
 		GormEngine: engine_var,
-		Config: c,
+		Config: myc,
 	}
 	return authorizer, nil
 }
@@ -38,6 +37,7 @@ func NewTokenAuthorizer(c *MysqlConfig) (*TokenMysqlAuthorizer, error) {
 // 验证token
 func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err error) {
 	fmt.Println("ss")
+	fmt.Println(ma.GormEngine)
 
 
 	db_session, err := gorm.Open("mysql", ma.GormEngine)
@@ -56,8 +56,9 @@ func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err er
 	db := db_session.Where(&models.Visit_Token{Token: token}).First(&VisitToken)
 
 	if db.Error != nil {
-		glog.V(2).Info("---lzp db.Error != nil   ")
-		return false, MysqlNoMatch
+		fmt.Println("---lzp db.Error != nil   ")
+		fmt.Println(db.Error.Error())
+		return false, db.Error
 	}
 	fmt.Println("db.RowsAffected")
 	fmt.Println(db.RowsAffected)
@@ -72,11 +73,11 @@ func (ma *TokenMysqlAuthorizer) Name() string  {
 	return "mysql_token"
 }
 
-func CheckToken(token string) (retbool bool, err error) {
-	TokenA, err :=  NewTokenAuthorizer(&server.CONF.MysqlConf)
+func (myc *MysqlConfig)CheckToken(token string) (retbool bool, err error) {
+	TokenA, err :=  myc.NewTokenAuthorizer()
 	if err != nil {
 		return false, err
 	} else {
-		return TokenA.Authenticate("yJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInVzZXJfb3JhZyI6ICJ6aGFuZ3NhaSIsICJ0b2tlbmlkIjogImIyOWI2YzFhNDI3MWQyYmVhMWQ2ZTY1YSIsICJ1c2VyX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgImV4cGlyZXMiOiAxNDgwMjc0MTQyLjI5OTI0NiwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJ6aGFuZ3NhaSIsICJyb2xlX3V1aWQiOiAyMDAsICJvcmdhX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInNhbHQiOiAiMzBmYTkzODc0NGRmMGU5YmI0NGZmMDJkIiwgImVtYWlsIjogIjEyM0BxcS5jb20iLCAidXNlcl9uYW1lIjogInpoYW5nc2FpIn0v0OPasrqBpyG_VLxfE2tq")
+		return TokenA.Authenticate(token)
 	}
 }

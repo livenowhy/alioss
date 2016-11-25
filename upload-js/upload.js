@@ -24,10 +24,11 @@ function send_request()
   
     if (xmlhttp!=null)
     {
+        token = 'eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInVzZXJfb3JhZyI6ICJ6aGFuZ3NhaSIsICJ0b2tlbmlkIjogIjRmZDc0NGEyZGY5ODhhZjViYWI0YTMzOSIsICJ1c2VyX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgImV4cGlyZXMiOiAxNDgwMjc1MTM2Ljk2MjMyMywgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJ6aGFuZ3NhaSIsICJyb2xlX3V1aWQiOiAyMDAsICJvcmdhX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInNhbHQiOiAiODVjMjQxN2E2ZWUxZmE3MGM0NTQxZTgzIiwgImVtYWlsIjogIjEyM0BxcS5jb20iLCAidXNlcl9uYW1lIjogInpoYW5nc2FpIn06gm9VHpPycOekRgk3z7FU'
         // phpUrl = 'http://123.56.9.18:8765/policy'
         phpUrl = 'http://0.0.0.0:8765/policy'
         xmlhttp.open( "GET", phpUrl, false );
-        xmlhttp.setRequestHeader("token", "eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhND")
+        xmlhttp.setRequestHeader("token", token)
         xmlhttp.send( null );
         return xmlhttp.responseText
     }
