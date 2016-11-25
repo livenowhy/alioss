@@ -39,6 +39,8 @@ type ConfigStruct struct {
 }
 
 type PolicyToken struct {
+	StatusCode int     `json:"statuscode"`  // add lzp 添加验证token操作
+	ErrMsg string     `json:"errmsg"`  // add lzp 添加验证token操作
 	AccessKeyId string `json:"accessid"`
 	Host        string `json:"host"`
 	Expire      int64  `json:"expire"`
@@ -90,6 +92,7 @@ func get_policy_token() string {
 	callbackBase64 := base64.StdEncoding.EncodeToString(callback_str)
 
 	var policyToken PolicyToken
+	policyToken.StatusCode = 0
 	policyToken.AccessKeyId = CONF.AliyunKey.AccessKeyID
 	policyToken.Host = CONF.AliyunOss.HostOuter
 	policyToken.Expire = expire_end
@@ -104,16 +107,35 @@ func get_policy_token() string {
 	return string(response)
 }
 
+
+
+func error_response(statuscode int, msg string) string{
+	var policyToken PolicyToken
+	policyToken.StatusCode = statuscode
+	policyToken.ErrMsg = msg
+	response, err := json.Marshal(policyToken)
+	if err != nil {
+		fmt.Println("json err:", err)
+	}
+	return string(response)
+}
+
 func PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
-
-	r.Header.Set("Access-Control-Allow-Headers", "token")
-	r.Header.Set("Access-Control-Allow-Origin", "*")
-
+		//w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "token")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	fmt.Println("---->")
 	token := r.Header.Get("token")
 	fmt.Println(token)
+
+	if token == "" {
+		response := error_response(2, "token is nil")
+		io.WriteString(w, response)
+		return
+	}
 
 
 	response := get_policy_token()
@@ -122,10 +144,6 @@ func PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
 
 
-	//w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "token")
-	w.Header().Set("Access-Control-Allow-Methods", "GET")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	io.WriteString(w, response)
 }
 

@@ -45,6 +45,7 @@ func LoadConfig(fileName string) (*Config, error) {
 	fmt.Println(c.AliyunOss.CallbackUrl)
 	fmt.Println(c.AliyunOss.ExpireTime)
 	fmt.Println(c.AliyunOss.UploadDir)
+	fmt.Println(c.MysqlConf.Charset)
 
 
 	return c, nil
