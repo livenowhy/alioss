@@ -1,5 +1,4 @@
 
-
 package server
 
 import (
@@ -8,12 +7,14 @@ import (
 	yaml "gopkg.in/yaml.v2"
 	"github.com/golang/glog"
 	"github.com/liuzhangpei/alioss/aliyun"
+	"github.com/liuzhangpei/alioss/token"
 )
 
 
 type Config struct {
 	AliyunKey aliyun.AliYunAccessKey   `yaml:"aliyunkey,omitempty"`
 	AliyunOss aliyun.AliYunOssConf   `yaml:"oss,omitempty"`
+	MysqlConf  token.MysqlConfig   `yaml:"mysqldbconf,omitempty"`
 
 }
 

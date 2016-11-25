@@ -206,7 +206,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	// 暂时不考虑这种情况
 		//
 
-
 	fmt.Println(string(public_key))
 	// 验证签名
 	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)
