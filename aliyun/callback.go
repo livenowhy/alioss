@@ -148,6 +148,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(" -- range r.Header -- 02 ")
 
+
+
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
 	pub_key_url_base64 := r.Header.Get("x-oss-pub-key-url")
 	fmt.Println(pub_key_url_base64)
@@ -190,6 +192,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	content_length := r.Header.Get("content-length")
 	fmt.Println("content_length")
 	fmt.Println(content_length)
+
 
 	callback_body, _ := ioutil.ReadAll(r.Body)
 	bodystr := string(callback_body)

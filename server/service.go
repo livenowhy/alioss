@@ -41,29 +41,30 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	headtoken := r.Header.Get("token")
 	fmt.Println(headtoken)
 
-		//result, _:= ioutil.ReadAll(r.Body)
-		//r.Body.Close()
-		//fmt.Printf("%s\n", result)
-
 	//结构已知，解析到结构体
 	result, err:= ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("ioutil.ReadAll is error")
 	}
 
+
+
 	fmt.Println(string(result))
-    var s utils.CallbackActionType;
-	err = json.Unmarshal([]byte(result), &s)
+    var actionType utils.CallbackActionType;
+	err = json.Unmarshal([]byte(result), &actionType)
+
+	//err = json.NewDecoder(r.Body).Decode(&actionType)
 	if err != nil {
+
+		fmt.Println(err.Error())
 
 		fmt.Println("json.Unmarshal is error")
 	}
 
 	fmt.Println("sidsdsdsdsds")
 
-	fmt.Println(s.ActionResourceId)
-	fmt.Println(s.ActionType)
-
+	fmt.Println(actionType.ActionResourceId)
+	fmt.Println(actionType.ActionType)
 
 
 
@@ -81,10 +82,7 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(" toke is ok")
 
-
-	action := &utils.CallbackActionType{ActionType:"ssss", ActionResourceId:"ssdsd"}
-
-	response := cg.AliyunKey.GetPolicyToken("user-dir/", action)
+	response := cg.AliyunKey.GetPolicyToken("user-dir/", &actionType)
 
 	fmt.Println("response end")
 

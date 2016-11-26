@@ -102,8 +102,10 @@ func (aly *AliYunAccessKey)GetPolicyToken(dir string, action *utils.CallbackActi
 
 	var callbackParam CallbackParam
 	callbackParam.CallbackUrl = aly.CallbackUrl
-	callbackParam.CallbackAction = action
-	callbackParam.CallbackBody = "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
+	// action 标明  操作的对象与资源; 拼接一个action
+	actionStr := "&actionType=" + action.ActionType + "&actionResourceId=" + action.ActionResourceId
+
+	callbackParam.CallbackBody = actionStr + "&filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}"
 	callbackParam.CallbackBodyType = "application/x-www-form-urlencoded"
 	callback_str, err := json.Marshal(callbackParam)
 	if err != nil {

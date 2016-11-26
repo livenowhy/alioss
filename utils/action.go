@@ -6,3 +6,11 @@ type CallbackActionType struct {
 	ActionResourceId string   `json:"actionResourceId"`  // add lzp 资源id
 }
 
+
+
+
+
+
+
+
+
