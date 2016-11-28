@@ -5,9 +5,6 @@ import (
 	"net/http"
 	"github.com/golang/glog"
 	"fmt"
-	//"github.com/liuzhangpei/alioss/aliyun"
-	//"github.com/liuzhangpei/alioss/aliyun"
-	"github.com/liuzhangpei/alioss/aliyun"
 )
 
 func main() {
@@ -24,6 +21,6 @@ func main() {
 
 
 	http.HandleFunc("/policy", c.PolicyCallback)
-	http.HandleFunc("/callback", aliyun.Callback)
+	http.HandleFunc("/callback", c.Callback)
 	http.ListenAndServe(":8765", nil)
 }

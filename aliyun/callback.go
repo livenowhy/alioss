@@ -1,7 +1,7 @@
 package aliyun
 
 import (
-	"encoding/json"
+
 	"fmt"
 	"io"
 	"net/http"
@@ -67,84 +67,13 @@ func RSAVerify(src []byte, sign []byte, public_key []byte) (pass bool, err error
     return true, nil
 }
 
-func GetPublicKey(pub_key_url string) (retbool bool, public_key []byte) {
-	var client = &http.Client{}
-
-	fmt.Println("begin get")
-	fmt.Println(pub_key_url)
-	request, err := http.NewRequest("GET", pub_key_url, nil)
-	if err != nil {
-		fmt.Println(" http.NewRequest err != nil")
-		return false, nil
-	}
-	fmt.Println("begin 02 get")
-	response, err := client.Do(request)
-	if err != nil {
-		fmt.Println(" client.Do(request) err != nil")
-		fmt.Println(err.Error())
-		return false, nil
-	}
-
-	fmt.Println("begin 03 get")
-	defer response.Body.Close()
-
-	if err != nil {
-		fmt.Println("err != nil")
-		return false, nil
-	}
-
-	if response.StatusCode == 200 {
-		fmt.Println("response.StatusCode")
-		public_key, _ = ioutil.ReadAll(response.Body)
-		public_key_str := string(public_key)
-		fmt.Println(public_key_str)
-		return true, public_key
-	} else {
-		return false, nil
-	}
-}
 
 
-
-func GetPublicKeyTwo(pub_key_url string) (retbool bool, public_key []byte) {
-
-
-	fmt.Println("url.Parse(pub_key_url)")
-	fmt.Println(pub_key_url)
-
-	fmt.Println("---GetPublicKeyTwo--- 01 0")
-	res, err := http.Get(pub_key_url)
-
-	fmt.Println("---GetPublicKeyTwo--- 01 2")
-	if err != nil {
-		fmt.Println(err.Error())
-		return false, nil
-	}
-
-	result, err := ioutil.ReadAll(res.Body)
-
-	fmt.Println("-- ioutil.ReadAll --")
-	if err != nil {
-		fmt.Println(err.Error())
-		return false, nil
-	}
-	fmt.Println("-- ioutil.ReadAll -- 02")
-	res.Body.Close()
-	return true, result
-}
+// 阿里云  callback 回调验证
+func AliCallback(w http.ResponseWriter, r *http.Request) (bodystr string, err error){
 
 
-
-
-
-
-func Callback(w http.ResponseWriter, r *http.Request) {
-
-	if r.Method != "POST" {
-		return
-	}
-
-
+	bodystr = ""
 	fmt.Println(" -- range r.Header -- 01 ")
 	for k, v := range r.Header {
 		fmt.Println(k)
@@ -152,13 +81,9 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(" -- range r.Header -- 02 ")
 
-
-
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
 	pub_key_url_base64 := r.Header.Get("x-oss-pub-key-url")
 	fmt.Println(pub_key_url_base64)
-	// aHR0cHM6Ly9nb3NzcHVibGljLmFsaWNkbi5jb20vY2FsbGJhY2tfcHViX2tleV92MS5wZW0=
-	// https://gosspublic.alicdn.com/callback_pub_key_v1.pem
 	pub_key_url, err := base64.StdEncoding.DecodeString(pub_key_url_base64)
 	if err != nil {
 		fmt.Println("err != nil --2 ")
@@ -169,19 +94,14 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(pub_key_url)
 
 	// get public key; 如果无法取得  public key 这里需要返回,不可以继续执行
-
 	pub_key_url_str := string(pub_key_url)
-	retbool, public_key := GetPublicKeyTwo(pub_key_url_str)
+	retbool, public_key := utils.GetPublicKeyTwo(pub_key_url_str)
 	if !retbool {
 		return
 	}
 
 	fmt.Println("get public key is ok")
-
-
-
-	// get authorization
-	authorization_base64 := r.Header.Get("authorization") // Authorization
+	authorization_base64 := r.Header.Get("authorization") // get  Authorization
 
 	fmt.Println(authorization_base64)
 	authorization , err:= base64.StdEncoding.DecodeString(authorization_base64)
@@ -199,7 +119,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 
 	callback_body, _ := ioutil.ReadAll(r.Body)
-	bodystr := string(callback_body)
+	bodystr = string(callback_body)
 
 	fmt.Println("callback_body")
 	fmt.Println(bodystr)
@@ -219,39 +139,16 @@ func Callback(w http.ResponseWriter, r *http.Request) {
         //else:
         //    auth_str = urllib2.unquote(self.path[0:pos]) + self.path[pos:] + '\n' + callback_body
 	// 暂时不考虑这种情况
-		//
+
 
 	fmt.Println(string(public_key))
-	// 验证签名
-	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)
+	pass, err := RSAVerify([]byte(auth_str), authorization, public_key)  // 验证签名
 	if pass == false {
 		fmt.Println("is error")
 		err.Error()
-	}
-
-	actionT, err := utils.NewCallbackActionType(bodystr)
-
-	if err != nil || actionT.ActionType == "" {
-		utils.ResponseError(w, "ERROR")
 		return
 	}
-
-	retbool, err = actionT.ActionIcon()
-	if !retbool {
-		fmt.Println("actionT.ActionIcon() is error")
-		utils.ResponseError(w, "ERROR")
-		return
-	}
-
-	var ResponseOss utils.ResponseOss
-	ResponseOss.Status = "OK"
-	response_oss, err := json.Marshal(ResponseOss)
-	if err != nil {
-		fmt.Println("json err:", err)
-	}
-	w.Header().Set("Content-Type", "application/json")
-	//w.Header().Set("Content-Length", )
-	io.WriteString(w, string(response_oss))
+	return
 }
 
 

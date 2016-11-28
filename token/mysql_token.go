@@ -14,6 +14,7 @@ type MysqlConfig struct {
 	User string `yaml:"user,omitempty"`
 	Pawd string `yaml:"pawd,omitempty"`
 	Cydb string `yaml:"cydb,omitempty"`
+	DataSourceName  string `yaml:"dataSourceName,omitempty"`
 }
 
 type TokenMysqlAuthorizer struct {
