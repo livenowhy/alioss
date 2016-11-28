@@ -10,30 +10,8 @@ import (
 )
 
 
-type StatusMsg struct {
-	StatusCode int     `json:"statuscode"`  // add lzp 添加验证token操作
-	ErrMsg string     `json:"errmsg"`  // add lzp 添加验证token操作
-}
-
-
-
-func error_response(statuscode int, msg string) string{
-	var statusmsg StatusMsg
-	statusmsg.StatusCode = statuscode
-	statusmsg.ErrMsg = msg
-	response, err := json.Marshal(statusmsg)
-	if err != nil {
-		fmt.Println("json err:", err)
-	}
-	return string(response)
-}
-
 // 获取
 func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
-	/**
-	 *
-	 */
-
 	r.ParseForm() //解析参数，默认是不会解析的
 
 	w.Header().Set("Access-Control-Allow-Headers", "token")
@@ -70,17 +48,16 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(actionType.ActionType)
 	fmt.Println(actionType.Uuid)
 
-
-
 	if headtoken == "" {
-		response := error_response(2, "token is nil")
-		io.WriteString(w, response)
+		fmt.Println("actionT.ActionIcon() is error")
+		utils.ResponseError(w, "ERROR")
 		return
+
 	}
 	_ , err = cg.MysqlConf.CheckToken(headtoken)
 	if err != nil {
-		response := error_response(2, "token is error")
-		io.WriteString(w, response)
+		fmt.Println("actionT.ActionIcon() is error")
+		utils.ResponseError(w, "ERROR")
 		return
 	}
 

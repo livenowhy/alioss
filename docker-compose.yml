@@ -6,3 +6,6 @@ services:
     - "8765:8765"
     volumes:
     - "./conf/key.yml:/oss_callback/conf/key.yml"
+
+
+  # docker run -itd -p 8765:8765  -v /root/alioss/conf/key.yml:/oss_callback/conf/key.yml index.boxlinker.com/boxlinker/oss_callback:1.0.1
