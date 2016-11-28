@@ -30,6 +30,9 @@ func error_response(statuscode int, msg string) string{
 
 // 获取
 func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
+	/**
+	 *
+	 */
 
 	r.ParseForm() //解析参数，默认是不会解析的
 
@@ -65,6 +68,7 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(actionType.ActionResourceId)
 	fmt.Println(actionType.ActionType)
+	fmt.Println(actionType.Uuid)
 
 
 

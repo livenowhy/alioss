@@ -28,11 +28,12 @@ function send_request()
 
         var data = JSON.stringify(
             {
+                "uuid": "ac0b5a11-96aa-37a5-992f-e5a43fe5c55d",
                 "actionType": "ActionType-test",
                 "actionResourceId": "actionResourceId-test"
             }
         )
-        token = 'eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInVzZXJfb3JhZyI6ICJ6aGFuZ3NhaSIsICJ0b2tlbmlkIjogIjRmZDc0NGEyZGY5ODhhZjViYWI0YTMzOSIsICJ1c2VyX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgImV4cGlyZXMiOiAxNDgwMjc1MTM2Ljk2MjMyMywgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJ6aGFuZ3NhaSIsICJyb2xlX3V1aWQiOiAyMDAsICJvcmdhX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInNhbHQiOiAiODVjMjQxN2E2ZWUxZmE3MGM0NTQxZTgzIiwgImVtYWlsIjogIjEyM0BxcS5jb20iLCAidXNlcl9uYW1lIjogInpoYW5nc2FpIn06gm9VHpPycOekRgk3z7FU'
+        token = 'eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInVzZXJfb3JhZyI6ICJ6aGFuZ3NhaSIsICJ0b2tlbmlkIjogIjU3ZmIzMGMzOTU3MzNlNWE0MDQwNmRkZSIsICJ1c2VyX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgImV4cGlyZXMiOiAxNDgxMTYzMjE2LjYzNzgzOSwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJ6aGFuZ3NhaSIsICJyb2xlX3V1aWQiOiAiMjAwIiwgIm9yZ2FfdXVpZCI6ICJhYzBiNWExMS05NmFhLTM3YTUtOTkyZi1lNWE0M2ZlNWM1NWQiLCAic2FsdCI6ICIxMzg2NTdkYmZlYzUyOGU0OWMyYTUzY2YiLCAiZW1haWwiOiAiMTIzQHFxLmNvbSIsICJ1c2VyX25hbWUiOiAiemhhbmdzYWkifaRp2XYzcZn0JeNoCex5ehY='
         // phpUrl = 'http://123.56.9.18:8765/policy'
         phpUrl = 'http://0.0.0.0:8765/policy'
         xmlhttp.open( "POST", phpUrl, false );

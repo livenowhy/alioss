@@ -12,6 +12,7 @@ import (
     "crypto/x509"
     "encoding/pem"
 	"crypto/md5"
+	"github.com/liuzhangpei/alioss/utils"
 )
 
 type ResponseOss struct {
@@ -134,6 +135,19 @@ func GetPublicKeyTwo(pub_key_url string) (retbool bool, public_key []byte) {
 	return true, result
 }
 
+func ResponseError(w http.ResponseWriter, Status string) {
+	var ResponseOss ResponseOss
+	ResponseOss.Status = Status
+	response_oss, err := json.Marshal(ResponseOss)
+	if err != nil {
+		fmt.Println("json err:", err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	//w.Header().Set("Content-Length", )
+	io.WriteString(w, string(response_oss))
+}
+
+
 func Callback(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
@@ -226,9 +240,23 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// response to OSS
+
+	actionT, err := utils.NewCallbackActionType(bodystr)
+
+	if err != nil || actionT.ActionType == "" {
+		ResponseError(w, "ERROR")
+		return
+	}
+
+	retbool, err = actionT.ActionIcon()
+	if !retbool {
+		fmt.Println("actionT.ActionIcon() is error")
+		ResponseError(w, "ERROR")
+		return
+	}
+
 	var ResponseOss ResponseOss
 	ResponseOss.Status = "OK"
-
 	response_oss, err := json.Marshal(ResponseOss)
 	if err != nil {
 		fmt.Println("json err:", err)

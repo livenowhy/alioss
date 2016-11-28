@@ -22,3 +22,27 @@ type Visit_Token struct {
 func (Visit_Token) TableName() string {
   return "visit_token"
 }
+
+type UserBase struct {
+	User_id string `gorm:"primary_key;type:varchar(64);not null;unique"` // 用户uuid
+
+	Username string `gorm:"type:varchar(64);not null;unique"` // 用户名
+	Email string `gorm:"type:varchar(64);not null;unique"`    // 邮箱
+	Password string `gorm:"type:varchar(64);not null"`    // 邮箱
+	Logo string `gorm:"type:varchar(64)"`    // 头像
+
+	Deleted string `gorm:"type:varchar(1)"`    // 是否删除
+	Reset_uuid string `gorm:"type:varchar(64)"`    // 头像
+	Salt string `gorm:"type:varchar(64)"`    // 头像
+	Sysadmin_flag string `gorm:"type:varchar(1)"`
+	Creation_time string `gorm:"type:varchar(1)"`
+	Update_time string `gorm:"type:varchar(1)"`
+}
+
+func (UserBase) TableName() string {
+  return "user"
+}
+
+
+
+
