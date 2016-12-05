@@ -35,7 +35,6 @@ func NewCallbackActionType(urlstr string) (*CallbackActionType, error) {
 	}
 
 	var actionT CallbackActionType
-
 	for k, v := range mp{
 
 		if "actionType" == k {
@@ -55,8 +54,6 @@ func NewCallbackActionType(urlstr string) (*CallbackActionType, error) {
 		} else if "width" == k {
 			actionT.Width = v[0]
 		}
-
-
 		fmt.Println(k, v)
 	}
 

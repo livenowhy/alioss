@@ -8,12 +8,13 @@ import (
 var ActionTypeDict map[string]interface{}
 
 
-func (cat *CallbackActionType)ActionIcon(dataSourceName, HostOuter string) (retbool bool, err error) {
+func (cat *CallbackActionType)UserAvatars(dataSourceName, HostOuter string) (retbool bool, err error) {
+	// 用户头像
 
 	filename := HostOuter + "/" + cat.Filename
 
 	fmt.Println(filename)
-	err = UpdateLogo(cat.Uuid, filename, dataSourceName)
+	err = UpdateUserAvatars(cat.Uuid, filename, dataSourceName)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false, err
@@ -22,3 +23,18 @@ func (cat *CallbackActionType)ActionIcon(dataSourceName, HostOuter string) (retb
 	return true, err
 }
 
+
+
+func (cat *CallbackActionType)MirrorIcon(dataSourceName, HostOuter string) (retbool bool, err error) {
+	// 镜像图标
+	filename := cat.Filename
+
+	fmt.Println(filename)
+	err = UpdateMirrorIcon(cat.Uuid, cat.ActionResourceId, filename, dataSourceName)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, err
+	}
+
+	return true, err
+}

@@ -26,10 +26,13 @@ function send_request()
     {
         // var data = {"actionType": "ActionType-test", "actionResourceId": "actionResourceId-test"}
 
+
+        	// UserAvatars
+	// MirrorIcon
         var data = JSON.stringify(
             {
-                "actionType": "ActionType-test",
-                "actionResourceId": "actionResourceId-test"
+                "actionType": "MirrorIcon",
+                "actionResourceId": "39828489-1bf6-334b-acdb-6a15bbd7c5a3"
             }
         )
         token = 'eyJ1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgInVzZXJfb3JhZyI6ICJsaXV6aGFuZ3BlaSIsICJ0b2tlbmlkIjogIjkwODg2YzEwYTUzYmM5OTAzOTYwZTU0NiIsICJ1c2VyX3V1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgImV4cGlyZXMiOiAxNDgxOTUzOTA5Ljk0NTcxMiwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJsaXV6aGFuZ3BlaSIsICJyb2xlX3V1aWQiOiAiMjAwIiwgIm9yZ2FfdXVpZCI6ICJhNTgzODVlMC03ZmRjLTM0NTgtYTdjZi03ZDM3NjRiOWFjODQiLCAic2FsdCI6ICJmYWZkYmYwZmZiNzBjNTMyMzM4YTRmMDgiLCAiZW1haWwiOiAibGl1emhhbmdwZWlAMTI2Y29tIiwgInVzZXJfbmFtZSI6ICJsaXV6aGFuZ3BlaSJ9u7dcSNlu4HdD39TGOgXZYw=='

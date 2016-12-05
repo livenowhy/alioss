@@ -18,8 +18,6 @@ func main() {
 	fmt.Println("init_config")
 	fmt.Println(c.AliyunKey.AccessKeySecret)
 
-
-
 	http.HandleFunc("/policy", c.PolicyCallback)
 	http.HandleFunc("/callback", c.Callback)
 	http.ListenAndServe(":8765", nil)

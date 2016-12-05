@@ -44,10 +44,17 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(actionType.ActionResourceId)
 	fmt.Println(actionType.ActionType)
-	fmt.Println(actionType.Uuid)
+
+	// 	// UserAvatars
+	// MirrorIcon
+	if actionType.ActionType != "UserAvatars" && actionType.ActionType != "MirrorIcon" {
+		fmt.Println("actionT.ActionType() is error")
+		utils.ResponseError(w, "ERROR", "ActionType  Does not support")
+		return
+	}
 
 	if headtoken == "" {
-		fmt.Println("actionT.ActionIcon() is error")
+		fmt.Println("headtoken is error")
 		utils.ResponseError(w, "ERROR", "token is nill")
 		return
 
