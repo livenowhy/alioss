@@ -48,7 +48,7 @@ func (cg *Config) Callback(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case "MirrorIcon":
-		retbool, err := actionT.MirrorIcon(cg.MysqlConf.DataSourceName, AliyunKey.HostOuter)
+		retbool, err := actionT.MirrorIcon(cg.MysqlConf.DataSourceName, cg.AliyunKey.HostOuter)
 		if !retbool {
 			fmt.Println("actionT.ActionIcon() is error")
 			utils.ResponseError(w, "ERROR", err.Error())
