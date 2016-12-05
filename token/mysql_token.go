@@ -36,7 +36,7 @@ func (myc *MysqlConfig)NewTokenAuthorizer() (*TokenMysqlAuthorizer, error) {
 
 
 // 验证token
-func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err error) {
+func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err error, vt *models.Visit_Token) {
 	fmt.Println("ss")
 	fmt.Println(ma.GormEngine)
 
@@ -48,7 +48,7 @@ func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err er
 	if err != nil {
 		fmt.Println("lzp --> CreateEngine : ")
 		glog.V(2).Infof("lzp --> CreateEngine : %s", err.Error())
-		return false, MysqlUnable
+		return false, MysqlUnable, nil
 	}
 	defer db_session.Close()
 
@@ -59,14 +59,14 @@ func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err er
 	if db.Error != nil {
 		fmt.Println("---lzp db.Error != nil   ")
 		fmt.Println(db.Error.Error())
-		return false, db.Error
+		return false, db.Error, nil
 	}
 	fmt.Println("db.RowsAffected")
 	fmt.Println(db.RowsAffected)
 	if db.RowsAffected >= 1 {
-		return true, nil
+		return true, nil, &VisitToken
 	} else {
-		return false, MysqlNoMatch
+		return false, MysqlNoMatch, nil
 	}
 }
 
@@ -74,10 +74,10 @@ func (ma *TokenMysqlAuthorizer) Name() string  {
 	return "mysql_token"
 }
 
-func (myc *MysqlConfig)CheckToken(token string) (retbool bool, err error) {
+func (myc *MysqlConfig)CheckToken(token string) (retbool bool, err error, vt *models.Visit_Token) {
 	TokenA, err :=  myc.NewTokenAuthorizer()
 	if err != nil {
-		return false, err
+		return false, err, nil
 	} else {
 		return TokenA.Authenticate(token)
 	}

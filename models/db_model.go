@@ -12,6 +12,9 @@ type Visit_Token struct {
 	Tokenid string `gorm:"type:varchar(64);unique"`  // token id
 	Token string `gorm:"type:varchar(1024)"`    // token
 
+	User_id string `gorm:"type:varchar(64)"`    // token
+	Org_id string `gorm:"type:varchar(64)"`    // token
+
 	// 0 token没有进行退出操作,  1进行了操作退出操作,已经失效
 	Deleted int
 

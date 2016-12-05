@@ -28,14 +28,14 @@ function send_request()
 
         var data = JSON.stringify(
             {
-                "uuid": "ac0b5a11-96aa-37a5-992f-e5a43fe5c55d",
                 "actionType": "ActionType-test",
                 "actionResourceId": "actionResourceId-test"
             }
         )
-        token = 'eyJ1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgInVzZXJfb3JhZyI6ICJ6aGFuZ3NhaSIsICJ0b2tlbmlkIjogIjU3ZmIzMGMzOTU3MzNlNWE0MDQwNmRkZSIsICJ1c2VyX3V1aWQiOiAiYWMwYjVhMTEtOTZhYS0zN2E1LTk5MmYtZTVhNDNmZTVjNTVkIiwgImV4cGlyZXMiOiAxNDgxMTYzMjE2LjYzNzgzOSwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJ6aGFuZ3NhaSIsICJyb2xlX3V1aWQiOiAiMjAwIiwgIm9yZ2FfdXVpZCI6ICJhYzBiNWExMS05NmFhLTM3YTUtOTkyZi1lNWE0M2ZlNWM1NWQiLCAic2FsdCI6ICIxMzg2NTdkYmZlYzUyOGU0OWMyYTUzY2YiLCAiZW1haWwiOiAiMTIzQHFxLmNvbSIsICJ1c2VyX25hbWUiOiAiemhhbmdzYWkifaRp2XYzcZn0JeNoCex5ehY='
+        token = 'eyJ1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgInVzZXJfb3JhZyI6ICJsaXV6aGFuZ3BlaSIsICJ0b2tlbmlkIjogIjkwODg2YzEwYTUzYmM5OTAzOTYwZTU0NiIsICJ1c2VyX3V1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgImV4cGlyZXMiOiAxNDgxOTUzOTA5Ljk0NTcxMiwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJsaXV6aGFuZ3BlaSIsICJyb2xlX3V1aWQiOiAiMjAwIiwgIm9yZ2FfdXVpZCI6ICJhNTgzODVlMC03ZmRjLTM0NTgtYTdjZi03ZDM3NjRiOWFjODQiLCAic2FsdCI6ICJmYWZkYmYwZmZiNzBjNTMyMzM4YTRmMDgiLCAiZW1haWwiOiAibGl1emhhbmdwZWlAMTI2Y29tIiwgInVzZXJfbmFtZSI6ICJsaXV6aGFuZ3BlaSJ9u7dcSNlu4HdD39TGOgXZYw=='
         // phpUrl = 'http://123.56.9.18:8765/policy'
-        phpUrl = 'http://0.0.0.0:8765/policy'
+        // phpUrl = 'http://0.0.0.0:8765/policy'
+        phpUrl = 'http://192.168.1.5:8765/policy'
         xmlhttp.open( "POST", phpUrl, false );
         xmlhttp.setRequestHeader("token", token)
         // xmlhttp.send( null );
