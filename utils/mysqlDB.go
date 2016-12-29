@@ -14,13 +14,11 @@ func CreateMysqlDb(dataSourceName string) *sqlx.DB{
 
 func UpdateUserAvatars(user_id, logo, dataSourceName string) error {
 	// 更新用户头像
-
 	db := CreateMysqlDb(dataSourceName)
 	const findProjectSql = `UPDATE user SET logo=? WHERE user_id=?`
 	tx := db.MustBegin()
     tx.MustExec(findProjectSql, logo, user_id)
 	return tx.Commit()
-
 }
 
 

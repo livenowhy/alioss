@@ -3,6 +3,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/golang/glog"
 )
 
 var ActionTypeDict map[string]interface{}
@@ -13,10 +14,13 @@ func (cat *CallbackActionType)UserAvatars(dataSourceName, HostOuter string) (ret
 
 	filename := HostOuter + "/" + cat.Filename
 
-	fmt.Println(filename)
+
+	glog.V(2).Infof("LoadConfig: %s", filename)
+
+
 	err = UpdateUserAvatars(cat.Uuid, filename, dataSourceName)
 	if err != nil {
-		fmt.Println(err.Error())
+		glog.V(2).Infof("UserAvatars: err!= nil : %s", err.Error())
 		return false, err
 	}
 

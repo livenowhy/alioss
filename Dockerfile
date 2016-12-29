@@ -13,10 +13,15 @@ RUN apk add --no-cache ca-certificates
 
 ADD OssServer /oss_callback/
 
+WORKDIR /oss_callback
+ADD ./conf/key.yml /oss_callback/conf/key.yml
 # 测试代码
 #ADD ./test/test /oss_callback/
 
-WORKDIR /oss_callback
+
 ENTRYPOINT ["/oss_callback/OssServer"]
 CMD ["--v=2","--alsologtostderr","/oss_callback/conf/key.yml"]
 EXPOSE 8765
+
+
+# docker run -d -p 8765:8765 index.boxlinker.com/boxlinker/oss_callback:latest

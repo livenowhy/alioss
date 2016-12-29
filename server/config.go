@@ -40,6 +40,7 @@ func LoadConfig(fileName string) (*Config, error) {
 	fmt.Println(c.AliyunKey.AccessKeySecret)
 
 	fmt.Println(c.AliyunOss.UploadDir)
+	fmt.Println(c.AliyunKey.HostOuter)
 	//fmt.Println(c.MysqlConf.Charset)
 
 

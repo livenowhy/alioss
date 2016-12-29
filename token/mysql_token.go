@@ -46,7 +46,6 @@ func (ma *TokenMysqlAuthorizer) Authenticate(token string) (retbool bool, err er
 	glog.V(2).Infof("lzp --> CreateEngine GormEngine : %s", ma.GormEngine)
 
 	if err != nil {
-		fmt.Println("lzp --> CreateEngine : ")
 		glog.V(2).Infof("lzp --> CreateEngine : %s", err.Error())
 		return false, MysqlUnable, nil
 	}

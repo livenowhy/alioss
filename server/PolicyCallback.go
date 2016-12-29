@@ -18,7 +18,6 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	fmt.Println("---->")
 	headtoken := r.Header.Get("token")
 	fmt.Println(headtoken)
 
@@ -40,7 +39,6 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("json.Unmarshal is error")
 	}
 
-	fmt.Println("sidsdsdsdsds")
 
 	fmt.Println(actionType.ActionResourceId)
 	fmt.Println(actionType.ActionType)
@@ -66,13 +64,11 @@ func (cg *Config)PolicyCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	actionType.Uuid = vt.User_id
+	actionType.Uuid = vt.UserId
 
 	fmt.Println(" toke is ok")
 	response := cg.AliyunKey.GetPolicyToken("user-dir/", &actionType)
 	fmt.Println("response end")
-
-
 
 	io.WriteString(w, response)
 }

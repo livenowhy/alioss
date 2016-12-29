@@ -6,6 +6,7 @@ import (
 	"github.com/liuzhangpei/alioss/aliyun"
 	"github.com/liuzhangpei/alioss/utils"
 	"fmt"
+	"github.com/golang/glog"
 )
 
 
@@ -43,7 +44,7 @@ func (cg *Config) Callback(w http.ResponseWriter, r *http.Request) {
 	case "UserAvatars":
 		retbool, err := actionT.UserAvatars(cg.MysqlConf.DataSourceName, cg.AliyunKey.HostOuter)
 		if !retbool {
-			fmt.Println("actionT.ActionIcon() is error")
+			glog.V(2).Infof("case->UserAvatars : %s", err.Error())
 			utils.ResponseError(w, "ERROR", err.Error())
 			return
 		}

@@ -26,19 +26,20 @@ function send_request()
     {
         // var data = {"actionType": "ActionType-test", "actionResourceId": "actionResourceId-test"}
 
-
-        	// UserAvatars
+        // UserAvatars
 	// MirrorIcon
         var data = JSON.stringify(
             {
-                "actionType": "MirrorIcon",
-                "actionResourceId": "39828489-1bf6-334b-acdb-6a15bbd7c5a3"
+                "actionType": "UserAvatars",
+                "actionResourceId": "39828489-1bf6-334b-acdb-6a15bbd7c5a3",
             }
         )
-        token = 'eyJ1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgInVzZXJfb3JhZyI6ICJsaXV6aGFuZ3BlaSIsICJ0b2tlbmlkIjogIjkwODg2YzEwYTUzYmM5OTAzOTYwZTU0NiIsICJ1c2VyX3V1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgImV4cGlyZXMiOiAxNDgxOTUzOTA5Ljk0NTcxMiwgInVzZXJfcm9sZSI6ICIxIiwgInVzZXJfaXAiOiAiMTI3LjAuMC4xIiwgInVzZXJfb3JnYSI6ICJsaXV6aGFuZ3BlaSIsICJyb2xlX3V1aWQiOiAiMjAwIiwgIm9yZ2FfdXVpZCI6ICJhNTgzODVlMC03ZmRjLTM0NTgtYTdjZi03ZDM3NjRiOWFjODQiLCAic2FsdCI6ICJmYWZkYmYwZmZiNzBjNTMyMzM4YTRmMDgiLCAiZW1haWwiOiAibGl1emhhbmdwZWlAMTI2Y29tIiwgInVzZXJfbmFtZSI6ICJsaXV6aGFuZ3BlaSJ9u7dcSNlu4HdD39TGOgXZYw=='
+        token = 'eyJ1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgInVzZXJfb3JhZyI6ICJsaXV6aGFuZ3BlaSIsICJ0b2tlbmlkIjogIjZlZTllNWFhYTJhNWM4NjdiNDExYzQyOSIsICJzYWx0IjogIjc5ODNhY2MzNThjMGU3Yzk2ZWQzOThlYyIsICJleHBpcmVzIjogMTQ4NDAyOTg0NC4zOTYwNjYsICJ1c2VyX29yZ2EiOiAibGl1emhhbmdwZWkiLCAicm9sZV91dWlkIjogIjIwMCIsICJvcmdhX3V1aWQiOiAiYTU4Mzg1ZTAtN2ZkYy0zNDU4LWE3Y2YtN2QzNzY0YjlhYzg0IiwgInVzZXJfdXVpZCI6ICJhNTgzODVlMC03ZmRjLTM0NTgtYTdjZi03ZDM3NjRiOWFjODQiLCAiZW1haWwiOiAibGl1emhhbmdwZWlAMTI2LmNvbSIsICJ1c2VyX25hbWUiOiAibGl1emhhbmdwZWkifYwvt239BEWEy3mlxCoeiCU='
         // phpUrl = 'http://123.56.9.18:8765/policy'
         // phpUrl = 'http://0.0.0.0:8765/policy'
-        phpUrl = 'http://192.168.1.5:8765/policy'
+        // phpUrl = 'http://192.168.1.5:8765/policy'
+        phpUrl = 'https://img.boxlinker.com/policy'
+        // phpUrl = 'http://www.livenowhy.com:8765/policy'
         xmlhttp.open( "POST", phpUrl, false );
         xmlhttp.setRequestHeader("token", token)
         // xmlhttp.send( null );
@@ -71,6 +72,8 @@ function get_signature()
         callbackbody = obj['callback']
 
         key = obj['dir']
+
+        console.log(host)
         return true;
     }
     return false;
@@ -96,6 +99,7 @@ function set_upload_param(up)
         });
 
         console.log('reset uploader')
+        console.log(new_multipart_params)
         console.log(callbackbody)
         //uploader.start();
     }
