@@ -12,11 +12,11 @@ var ActionTypeDict map[string]interface{}
 func (cat *CallbackActionType)UserAvatars(dataSourceName, HostOuter string) (retbool bool, err error) {
 	// 用户头像
 
-	filename := HostOuter + "/" + cat.Filename
+	//filename := HostOuter + "/" + cat.Filename
+	filename := cat.Filename  // 不添加前缀
 
 
 	glog.V(2).Infof("LoadConfig: %s", filename)
-
 
 	err = UpdateUserAvatars(cat.Uuid, filename, dataSourceName)
 	if err != nil {
